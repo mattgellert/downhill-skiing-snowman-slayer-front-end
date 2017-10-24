@@ -98,7 +98,9 @@ function Component(width, height, source, x, y, type) {
       snowman.speedY = 1;
       snowman.newPos()
       snowman.update()
-      if ((snowman.x >= mySkier.x && snowman.x <= mySkier.x + 40) && snowman.y === mySkier.y - 40) {
+      let snowmanX = Array.apply(null, Array(snowman.width - 20)).map(function (_, i) {return i + snowman.x + 10;});
+      let skierX = Array.apply(null, Array(mySkier.width)).map(function (_, i) {return i + mySkier.x;});
+      if (snowmanX.some(x => skierX.includes(x)) && snowman.y + 50 === mySkier.y) {
         snowman.image.src = "images/SnowmanDeath2.png"
       }
     })
