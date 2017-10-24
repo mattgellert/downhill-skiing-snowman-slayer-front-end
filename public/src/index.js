@@ -1,9 +1,11 @@
 let myBackground;
 let mySkier;
+let totalSnowmen = [];
 
 function startGame() {
-  myBackground = new Component(656, 270, "images/bg.png", 0, 0, "background");
+  myBackground = new Component(480, 270, "images/bg.png", 0, 0, "background");
   mySkier = new Component(40, 40, "images/Skier.png", 220, 210, "image")
+  // snowman = new Component(40, 60, "images/Snowman1.png", 220, 0, "image")
   myGameArea.start();
 
 }
@@ -71,65 +73,96 @@ function Component(width, height, source, x, y, type) {
 
   function updateGameArea() {
     myGameArea.clear();
+    // mySkier.x = 0
+    if (myGameArea.keys && myGameArea.keys[37]) {
+      if (mySkier.x > 0) {
+        mySkier.image.src = "images/LeftTurn/SkierTurnLeft3.png"
+        mySkier.x -= 2
+      }
+    }
+    if (myGameArea.keys && myGameArea.keys[39]) {
+      if (mySkier.x < (myBackground.width - 40)){
+        mySkier.image.src = "images/RightTurn/SkierTurnRight3.png"
+        mySkier.x += 2
+      }
+    }
     myBackground.speedY = 1;
     myBackground.newPos();
     myBackground.update();
     mySkier.newPos()
     mySkier.update()
+
+    let newSnowmen = snowmanController(1.01)
+    totalSnowmen = [...totalSnowmen, ...newSnowmen]
+    totalSnowmen.forEach(snowman => {
+      snowman.speedY = 1;
+      snowman.newPos()
+      snowman.update()
+      if ((snowman.x >= mySkier.x && snowman.x <= mySkier.x + 40) && snowman.y === mySkier.y - 40) {
+        snowman.image.src = "images/SnowmanDeath2.png"
+      }
+    })
+
   }
 
-  function move(dir) {
-      mySkier.image.src = "images/Skier.png";
-      // if (dir == "up") {mySkier.speedY = -1; }
-      // if (dir == "down") {mySkier.speedY = 1; }
-      if (dir == "left") {mySkier.speedX = -1; }
-      if (dir == "right") {mySkier.speedX = 1; }
+  function snowmanController(difficulty) {
+    let num = Math.floor(Math.random() * difficulty)
+    let newSnowmen = []
+    for (var i = 0; i < num; i++) {
+      newSnowmen.push(new Component(40, 60, "images/Snowman1.png", Math.floor(Math.random() * myBackground.width), 0, "image"))
+    }
+    return newSnowmen
   }
 
+  // function move(dir) {
+  //   mySkier.image.src = "images/Skier.png";
+  //     // if (dir == "up") {mySkier.speedY = -1; }
+  //     // if (dir == "down") {mySkier.speedY = 1; }
+  //     if (dir == "left") {
+  //       if (mySkier.x > 0) {
+  //         mySkier.image.src = "images/LeftTurn/SkierTurnLeft3.png"
+  //         mySkier.x += -5;
+  //       }
+  //     }
+  //     if (dir == "right") {
+  //       if (mySkier.x < myBackground.width - 40) {
+  //         mySkier.image.src = "images/RightTurn/SkierTurnRight3.png"
+  //         mySkier.x += 5;
+  //       }
+  //     }
+  // }
+  //
   function clearmove() {
-      mySkier.image.src = "smiley.gif";
-      mySkier.speedX = 0;
-      mySkier.speedY = 0;
+      mySkier.image.src = "images/Skier.png";
+      // mySkier.speedX = 0;
+      // mySkier.speedY = 0;
   }
 
 
   $(document).ready(() => {
 
     document.addEventListener('keydown', function(e) {
-      if (e.which === 37) {
-        move("left")
-      } else {
-        clearmove()
-      }
+      e.preventDefault()
+      myGameArea.keys = (myGameArea.keys || [])
+      myGameArea.keys[e.keyCode] = (e.type == 'keydown')
+      // if (e.which === 37) {
+      //   move("left")
+      // }
     })
 
-    document.addEventListener('keydown', function(e) {
-      while (e.which === 39) {
-        move("right")
-      } else {
-        clearmove()
+    // document.addEventListener('keydown', function(e) {
+    //   if (e.which === 39) {
+    //     move("right")
+    //   }
+    // })
+
+    document.addEventListener('keyup', function(e) {
+      myGameArea.keys[e.keyCode] = (e.type == 'keydown')
+      clearmove()
+      // if (e.which === 37 || 39) {
+      //   clearmove()
+      // }
     })
 
     startGame()
   });
-
-  function moveSkierLeft() {
-    var leftNumbers = skier.style.left.replace('px', '')
-    var left = parseInt(leftNumbers, 10)
-
-    if (left > 0) {
-      skier.style.left = `${left - 10}px`
-      skier.src = "images/LeftTurn/SkierTurnLeft3.png";
-    }
-
-
-  }
-
-  function moveSkierRight() {
-    var rightNumbers = skier.style.left.replace('px', '')
-    var right = parseInt(rightNumbers, 10)
-
-    if (right < 760) {
-      skier.style.left = `${right + 10}px`
-    }
-  }
