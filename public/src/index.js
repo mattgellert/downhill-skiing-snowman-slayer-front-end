@@ -5,6 +5,7 @@ let totalSnowmen = [];
 function startGame() {
   myBackground = new Component(480, 270, "images/bg.png", 0, 0, "background");
   mySkier = new Component(40, 40, "images/Skier.png", 220, 210, "image")
+  // snowball = new Component(9, 15, "images/Snowball.png", 0, 0, "image")
   // snowman = new Component(40, 60, "images/Snowman1.png", 220, 0, "image")
   myGameArea.start();
 
@@ -70,8 +71,9 @@ function Component(width, height, source, x, y, type) {
       }
     }
   }
-
+let snowballs = []
   function updateGameArea() {
+
     myGameArea.clear();
     // mySkier.x = 0
     if (myGameArea.keys && myGameArea.keys[37]) {
@@ -86,25 +88,57 @@ function Component(width, height, source, x, y, type) {
         mySkier.x += 2
       }
     }
+
+
+    // if (myGameArea.keys && myGameArea.keys[32]) {
+      // let snowball = new Component(9, 15, "images/Snowball.png", mySkier.x + 35, mySkier.y + 20, "image")
+      // mySkier.image.src = "images/ForwardThrow/SkierForwardThrow6.png"
+      // snowballs.push(snowball)
+    // }
+
     myBackground.speedY = 1;
     myBackground.newPos();
     myBackground.update();
     mySkier.newPos()
     mySkier.update()
 
-    let newSnowmen = snowmanController(1.01)
+    snowballs.forEach(snowball => {
+      // snowball.speedY = -5
+      snowball.y -= 5
+      snowball.update()
+    })
+
+    let newSnowmen = snowmanController(1.07)
     totalSnowmen = [...totalSnowmen, ...newSnowmen]
-    totalSnowmen.forEach(snowman => {
+    totalSnowmen = totalSnowmen.filter(snowman => {
       snowman.speedY = 1;
       snowman.newPos()
       snowman.update()
-      let snowmanX = Array.apply(null, Array(snowman.width - 20)).map(function (_, i) {return i + snowman.x + 10;});
-      let skierX = Array.apply(null, Array(mySkier.width)).map(function (_, i) {return i + mySkier.x;});
-      if (snowmanX.some(x => skierX.includes(x)) && snowman.y + 50 === mySkier.y) {
-        snowman.image.src = "images/SnowmanDeath2.png"
-      }
-    })
 
+      snowballs = snowballs.filter(snowball => {
+        if (snowball.x >= snowman.x && snowball.x <= snowman.x + snowman.width && snowman.y + 50 === snowball.y) {
+          snowman.image.src = "images/SnowmanDeath2.png" //replace with skier dying
+          return false
+        }
+        if (snowball.y < 0) {
+          return false
+        } else {
+          return true
+        }
+      })
+
+      if (mySkier.x >= snowman.x && mySkier.x <= snowman.x + snowman.width && snowman.y + 50 === mySkier.y) {
+        snowman.image.src = "images/SnowmanDeath2.png" //replace with skier dying
+      }
+
+      if (snowman.y > myBackground.height) {
+        return false
+      } else {
+        return true
+      }
+
+    })
+    snowballTimer++
   }
 
   function snowmanController(difficulty) {
@@ -116,54 +150,35 @@ function Component(width, height, source, x, y, type) {
     return newSnowmen
   }
 
-  // function move(dir) {
-  //   mySkier.image.src = "images/Skier.png";
-  //     // if (dir == "up") {mySkier.speedY = -1; }
-  //     // if (dir == "down") {mySkier.speedY = 1; }
-  //     if (dir == "left") {
-  //       if (mySkier.x > 0) {
-  //         mySkier.image.src = "images/LeftTurn/SkierTurnLeft3.png"
-  //         mySkier.x += -5;
-  //       }
-  //     }
-  //     if (dir == "right") {
-  //       if (mySkier.x < myBackground.width - 40) {
-  //         mySkier.image.src = "images/RightTurn/SkierTurnRight3.png"
-  //         mySkier.x += 5;
-  //       }
-  //     }
-  // }
-  //
   function clearmove() {
       mySkier.image.src = "images/Skier.png";
       // mySkier.speedX = 0;
       // mySkier.speedY = 0;
   }
 
-
+  let snowballTimer = 20
   $(document).ready(() => {
 
     document.addEventListener('keydown', function(e) {
       e.preventDefault()
-      myGameArea.keys = (myGameArea.keys || [])
-      myGameArea.keys[e.keyCode] = (e.type == 'keydown')
-      // if (e.which === 37) {
-      //   move("left")
-      // }
+      if (e.which === 32) {
+        if (snowballTimer > 20) {
+          let snowball = new Component(9, 15, "images/Snowball.png", mySkier.x + 35, mySkier.y + 20, "image")
+          mySkier.image.src = "images/ForwardThrow/SkierForwardThrow6.png"
+          snowballs.push(snowball)
+          snowballTimer = 0
+        }
+      } else {
+        myGameArea.keys = (myGameArea.keys || [])
+        myGameArea.keys[e.keyCode] = (e.type == 'keydown')
+      }
     })
 
-    // document.addEventListener('keydown', function(e) {
-    //   if (e.which === 39) {
-    //     move("right")
-    //   }
-    // })
-
     document.addEventListener('keyup', function(e) {
-      myGameArea.keys[e.keyCode] = (e.type == 'keydown')
-      clearmove()
-      // if (e.which === 37 || 39) {
-      //   clearmove()
-      // }
+      if (e.which !== 32) {
+        myGameArea.keys[e.keyCode] = (e.type == 'keydown')
+        clearmove()
+      }
     })
 
     startGame()
