@@ -1,0 +1,12 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "username": "horse-midwife",
+      "top_score": 100000,
+      "most_snowmen": 40,
+      "total_snowmen": 40,
+      "game_count": 40
+    }
+  ]
+}
