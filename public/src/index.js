@@ -1,4 +1,34 @@
 $(document).ready(() => {
+  const leaderboard = document.getElementById('leaderboard')
+  fetch('http://localhost:3000/api/v1/users')
+    .then(resp => resp.json())
+    .then(json => displayLeaders(json))
+
+  function displayLeaders(json) {
+    let leaders = json.sort((a,b) => {
+      if (a.top_score > b.top_score) {
+        return -1
+      } else if (a.top_score === b.top_score) {
+        return 0
+      } else {
+        return 1
+      }
+    })
+    debugger
+  }
+
+
+  const startForm = document.querySelector('form#start')
+  const startButton = document.createElement('input')
+  startButton.type = "submit"
+  startButton.value = "New Game"
+  startForm.appendChild(startButton)
+  startForm.addEventListener('submit', function(e) {
+    e.preventDefault()
+    startForm.removeChild(startButton)
+    startGame();
+  })
+
   let myBackground;
   let mySkier;
   let myScore;
@@ -206,17 +236,6 @@ $(document).ready(() => {
   function clearmove() {
       mySkier.image.src = "images/Skier.png";
   };
-
-  const startForm = document.querySelector('form#start')
-  const startButton = document.createElement('input')
-  startButton.type = "submit"
-  startButton.value = "New Game"
-  startForm.appendChild(startButton)
-  startForm.addEventListener('submit', function(e) {
-    e.preventDefault()
-    startForm.removeChild(startButton)
-    startGame();
-  })
 
   function endGame() {
     myGameArea.stop();
