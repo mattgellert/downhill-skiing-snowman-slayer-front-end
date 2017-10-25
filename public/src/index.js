@@ -158,9 +158,9 @@ $(document).ready(() => {
   };
 
   function detectSkierCollision(component, type) {
-    let withinY = (mySkier.y <= (snowman.y + snowman.height) && mySkier.y >= snowman.y)
-    let upperLeftwithinX = (mySkier.x >= snowman.x && mySkier.x <= (snowman.x + snowman.width))
-    let upperRightwithinX = (mySkier.x + mySkier.width) >= snowman.x && (mySkier.x + mySkier.width) <= (snowman.x + snowman.width)
+    let withinY = (mySkier.y <= (component.y + component.height) && mySkier.y >= component.y)
+    let upperLeftwithinX = (mySkier.x >= component.x && mySkier.x <= (component.x + component.width))
+    let upperRightwithinX = (mySkier.x + mySkier.width) >= component.x && (mySkier.x + mySkier.width) <= (component.x + component.width)
 
     if (mySkier.x >= component.x && mySkier.x <= (component.x + component.width) && (component.y + 50) === mySkier.y) {
       if (type === "snowman") {
@@ -185,7 +185,7 @@ $(document).ready(() => {
     e.preventDefault();
     if (e.which === 32) {
       if (snowballTimer > 14) {
-        let snowball = new Component(9, 15, "images/Snowball.png", mySkier.x + 35, mySkier.y + 20, "image");
+        let snowball = new Component(9, 15, "images/Snowball.png", mySkier.x + 30, mySkier.y + 20, "image");
         mySkier.image.src = "images/ForwardThrow/SkierForwardThrow6.png";
         snowballs.push(snowball);
         snowballTimer = 0;

@@ -1,0 +1,15 @@
+class Skier {
+  constructor() {
+
+  }
+
+  changeDirection() {
+
+  }
+
+  
+
+
+
+
+}
