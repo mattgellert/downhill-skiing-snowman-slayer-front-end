@@ -1,5 +1,6 @@
 $(document).ready(() => {
-  const leaderboard = document.getElementById('leaderboard')
+  const leaderboardWrapper = document.getElementById('leaderboard-wrapper')
+  const leaderboard
   fetch('http://localhost:3000/api/v1/users')
     .then(resp => resp.json())
     .then(json => displayLeaders(json))
