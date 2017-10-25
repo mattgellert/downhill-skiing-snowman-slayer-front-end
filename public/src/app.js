@@ -72,9 +72,8 @@ class Game {
       snowball.update()
     })
 
-    let newSnowmen = this.snowmanCreator(1.05) 
+    let newSnowmen = this.snowmanCreator(1.05)
     this.snowmen = [...this.snowmen, ...newSnowmen]
-    console.log(this.snowmen.length)
 
     this.detectCollisions(this.snowmen)
 
@@ -120,7 +119,7 @@ class Game {
     let num = Math.floor(Math.random() * difficulty);
     let newSnowmen = [];
     for (var i = 0; i < num; i++) {
-      newSnowmen.push(new Component(40, 60, "images/Snowman1.png", Math.floor(Math.random() * this.background.width), 0, "image", this));
+      newSnowmen.push(new Component(40, 60, "images/Snowman1.png", Math.floor(Math.random() * this.background.width), -10, "image", this));
     }
     return newSnowmen;
   }
@@ -134,7 +133,13 @@ class Game {
       this.detectSnowballCollision(snowman)
       this.detectSkierCollision(snowman, "snowman");
 
-      snowman.y > this.background.height ? false : true
+      // snowman.y > this.background.height ? false : true
+      if (snowman.y > this.background.height) {
+        // snowman = null
+        return false
+      } else {
+        return true
+      }
     })
   }
 
@@ -155,6 +160,7 @@ class Game {
         return false
       }
       if (snowball.y < 0) {
+        // snowball = null
         return false
       } else {
         return true
@@ -182,19 +188,20 @@ class Game {
     // const startButton = document.createElement('input')
     // startButton.type = "submit"
     // startButton.value = "New Game"
+    document.body.removeChild(document.querySelector('canvas'))
+    this.displayScore();
     setTimeout(() => {
-      document.body.removeChild(document.querySelector('canvas'))
-      this.resetGameComponents();
-      this.displayScore();
-      App.init();
-    }, 1000);
-  };
+      location.reload(true)
+    }, )
 
-  resetGameComponents() {
-    this.snowmen = [];
-    this.snowballs = [];
-    this.snowmenHit = 0;
-  }
+    // App.init();
+    // setTimeout(() => {
+    //   document.body.removeChild(document.querySelector('canvas'))
+    //   this.resetGameComponents();
+    //   this.displayScore();
+    //   App.init();
+    // }, 1000);
+  };
 
   displayScore() {
     console.log("user score:",parseInt(this.score.text.slice(7)))

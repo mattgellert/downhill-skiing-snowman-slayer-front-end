@@ -15,7 +15,6 @@ class Component {
     this.y = y;
     this.context = game.context;
     this.game = game;
-
   }
 
   update() {
