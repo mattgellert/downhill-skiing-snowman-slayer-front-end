@@ -34,7 +34,7 @@ class Game {
   start() {
     document.body.insertBefore(this.canvas, document.body.childNodes[0])
     this.frameNo = 0;
-    this.background = new Component(480, 540, "images/bg.png", 0, 0, "background", this);
+    this.background = new Component(480, 540, "", 0, 0, "background", this);
     this.skier = new Skier(40, 40, "images/Skier.png", 220, 480, "image", this);
     this.score = new Component("20px", "Consolas", "blue", 340, 40, "text", this);
     this.snowmenScore = new Component("20px", "Consolas", "blue", 340, 80, "text", this);
@@ -74,6 +74,11 @@ class Game {
     this.snowballs.forEach(snowball => {
       snowball.y -= 5
       snowball.update()
+    })
+
+    this.snowmen.forEach(snowman => {
+      snowman.y += 1
+      snowman.update()
     })
 
     let newSnowmen = this.snowmanCreator(1.02)
