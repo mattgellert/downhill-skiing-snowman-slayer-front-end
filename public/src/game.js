@@ -23,6 +23,7 @@ class Game {
     this.trees = [];
     this.logs = [];
     this.snowballs = [];
+    this.rubies = []
     this.snowmenHit = 0;
     this.spawnPosition = 0;
     this.spawnPositions = [ 0, 50, 100, 150, 200, 250, 300, 350, 400, 450 ];
@@ -64,11 +65,14 @@ class Game {
     let newLogs = this.logCreator(1.005)
     this.logs = [...this.logs, ...newLogs]
 
-
+    let newRubies = this.rubyCreator(1.0005)
+    this.rubies = [...this.rubies, ...newRubies]
 
     this.detectCollisions()
 
     this.detectLogCollisions()
+
+    this.detectRubyCollisions()
 
     this.score.text="SCORE: " + this.frameNo;
     this.score.update();
@@ -173,6 +177,16 @@ class Game {
     return newLogs;
   }
 
+  rubyCreator(difficulty) {
+    let num = Math.floor(Math.random() * difficulty);
+    let newRubies = [];
+    for (let i = 0; i < num; i++) {
+      newRubies.push(new Component(15, 15, "images/rubyGem.png", this.spawnPositions[this.spawnPosition], -60, "image", this));
+      this.incrementSpawn()
+    }
+    return newRubies;
+  }
+
   detectCollisions() {
     this.snowmen = this.snowmen.filter(snowman => {
       snowman.speedY = 1;
@@ -254,6 +268,25 @@ class Game {
     })
   }
 
+  detectRubyCollisions() {
+    this.rubies = this.rubies.filter(ruby => {
+      ruby.speedY = 1;
+      ruby.newPos()
+      ruby.update()
+
+      this.detectSkierCollision(ruby, "ruby");
+
+      // ruby.y > this.background.height ? false : true
+
+      if (ruby.y > this.background.height) {
+        // ruby = null
+        return false
+      } else {
+        return true
+      }
+    })
+  }
+
   detectSnowballCollision(component, type) {
     this.snowballs = this.snowballs.filter(snowball => {
 
@@ -296,6 +329,16 @@ class Game {
         if (!this.keys[38]) {
           this.endGame();
         }
+      }else if (type === "ruby") {
+        this.snowballDelay = (this.snowballDelay/2)
+        setTimeout(()=> {
+          component.height = 0
+          component.width = 0
+        }, 100)
+        setTimeout(() => {
+          this.snowballDelay = (this.snowballDelay * 2)
+        }, 10000)
+        //NEED TO CHANGE SKIER IMAGE
       }
     }
   }
