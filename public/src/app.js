@@ -18,7 +18,8 @@ class App {
   }
 
   static displayEndMenu(timeScore, snowmenScore) {
-    document.body.removeChild(document.querySelector('canvas'))
+    // document.body.removeChild(document.querySelector('canvas'))
+
 
     const leaderboardDisplay = document.querySelector('.leaderboard-display')
     const rowLabels = document.querySelectorAll('.row')
@@ -39,6 +40,8 @@ class App {
       <button type='submit'>Save</button>
     </form>`
     startDiv.innerHTML += userInput
+    document.querySelector('canvas').style.zIndex = "-1";
+    document.querySelector('.leaderboard-display-wrapper').style.marginTop = "80px";
     startDiv.children[0].addEventListener('submit', (e) => {
       e.preventDefault()
       fetch('http://localhost:3000/api/v1/users', {

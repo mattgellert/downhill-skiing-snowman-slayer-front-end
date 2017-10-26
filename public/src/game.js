@@ -45,6 +45,7 @@ class Game {
     this.clear()
 
     this.skier.updateSkierDirection();
+    this.skier.checkForSnowballThrow();
 
     this.background.speedY = 1;
     this.background.newPos();
@@ -99,32 +100,36 @@ class Game {
 
     this.skier.newPos();
     this.skier.update();
+
+    this.score.text="SCORE: " + this.frameNo;
+    this.score.update();
+
+    this.snowmenScore.text="Snowmen: " + this.snowmenHit;
+    this.snowmenScore.update()
   }
 
   addKeyPressListeners() {
-    let check = true;
+    // let check = true;
     document.addEventListener('keydown', (e) => {
       e.preventDefault();
-      if (e.which === 32 && check === true) {
+      // if (e.which === 32 && check === true) {
+      //
+      //   let snowball = new Component(9, 15, "images/Snowball.png", this.skier.x + 30, this.skier.y + 20, "image", this);
+      //   this.skier.image.src = "images/ForwardThrow/SkierForwardThrow6.png";
+      //   this.snowballs.push(snowball);
+      //
+      //   check = false;
+      //   setTimeout(()=>{check = true},this.snowballDelay)
 
-        let snowball = new Component(9, 15, "images/Snowball.png", this.skier.x + 30, this.skier.y + 20, "image", this);
-        this.skier.image.src = "images/ForwardThrow/SkierForwardThrow6.png";
-        this.snowballs.push(snowball);
-
-        check = false;
-        setTimeout(()=>{check = true},this.snowballDelay)
-
-      } else {
+      // } else {
         this.keys = (this.keys || []);
         this.keys[e.keyCode] = (e.type === 'keydown');
-      }
+      // }
     });
 
     document.addEventListener('keyup', (e) => {
-      if (e.which !== 32) {
-        this.keys[e.keyCode] = (e.type === 'keydown');
-        this.clearMove();
-      }
+      this.keys[e.keyCode] = (e.type === 'keydown');
+      this.clearMove();
     });
   }
 
