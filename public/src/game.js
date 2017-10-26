@@ -17,7 +17,8 @@ class Game {
     this.skier = new Skier(40, 40, "images/Skier.png", 220, 480, "image", this);
     this.score = new Component("20px", "Consolas", "blue", 340, 40, "text", this);
     this.snowmenScore = new Component("20px", "Consolas", "blue", 340, 80, "text", this);
-    this.interval = setInterval(this.updateGameArea, 30)
+    this.gameSpeed = 10;
+    this.interval = setInterval(this.updateGameArea, this.gameSpeed)
     this.snowmen = [];
     this.trees = [];
     this.logs = [];
@@ -25,6 +26,7 @@ class Game {
     this.snowmenHit = 0;
     this.spawnPosition = 0;
     this.spawnPositions = [ 0, 50, 100, 150, 200, 250, 300, 350, 400, 450 ];
+    this.snowballDelay = 400;
 
     this.addKeyPressListeners();
   }
@@ -105,7 +107,7 @@ class Game {
         this.snowballs.push(snowball);
 
         check = false;
-        setTimeout(()=>{check = true},400)
+        setTimeout(()=>{check = true},this.snowballDelay)
 
       } else {
         this.keys = (this.keys || []);
