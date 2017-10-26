@@ -3,12 +3,56 @@ canvas {
     border:1px solid #d3d3d3;
     background-color: #f1f1f1;
     position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin-left: auto;
+    margin-right: auto;
     width:60%;
     height:100%;
+    padding: 0;
 }
-* { margin: 0; padding: 0;}
 
-body, html { height:100%; }
+h1 {
+  text-align: center;
+}
+
+div#leaderboard-wrapper {
+  display: flex;
+}
+
+div#spacer {
+  flex: 0.5;
+}
+div#leaderboard-display-wrapper {
+  flex: 1;
+  text-align: center;
+  border-style: ridge;
+}
+
+button {
+  display: inline-block;
+  padding: 10px 20px;
+  font-size: 24px;
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+  outline: none;
+  color: #fff;
+  background-color: #4CAF50;
+  border: none;
+  border-radius: 10px;
+  box-shadow: 0 5px #999;
+}
+
+button:hover {background-color: #3e8e41}
+
+button:active {
+  background-color: #3e8e41;
+  box-shadow: 0 5px #666;
+  transform: translateY(4px);
+}
 
 
 /*Matt's additions above*/

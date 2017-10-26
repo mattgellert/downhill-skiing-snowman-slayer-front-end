@@ -4,11 +4,36 @@ class App {
   }
 
   static init() {
-    const startForm = document.querySelector('form#start')
-    startForm.innerHTML = "<input type='submit' value='New Game'></input>"
-    startForm.addEventListener('submit', (e) => {
+    fetch('http://localhost:3000/api/v1/users')
+      .then(resp => resp.json())
+      .then(json => this.displayStartMenu(json))
+  }
+
+  static displayStartMenu(json) {
+    const leaderboardDisplay = document.getElementById('leaderboard-display')
+    json.sort((a,b) => {
+      if (a.top_score < b.top_score) {
+        return 1
+      } else if (a.top_score > b.top_score) {
+        return -1
+      } else {
+        return 0
+      }
+    }).slice(0, 4).forEach(user => {
+      let stats = `<h3>${user.username}</h3>
+      <p>Top Score: ${user.top_score}</p>
+      <p>Most Snowmen: ${user.most_snowmen}</p>
+      <p>Total Snowmen:${user.total_snowmen}</p>
+      <br>`
+      leaderboardDisplay.innerHTML += stats;
+    })
+
+
+    const startDiv = document.querySelector('div#start-button')
+    startDiv.innerHTML = "<button>Start</button>"
+    startDiv.children[0].addEventListener('click', (e) => {
       e.preventDefault()
-      startForm.innerHTML = ''
+      startDiv.innerHTML = ''
       this.startGame();
     })
   }
@@ -287,7 +312,7 @@ class Game {
 
   endGame() {
     this.stop();
-    // const startForm = document.querySelector('form#start')
+    // const startDiv = document.querySelector('form#start')
     // const startButton = document.createElement('input')
     // startButton.type = "submit"
     // startButton.value = "New Game"
