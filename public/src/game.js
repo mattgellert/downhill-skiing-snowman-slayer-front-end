@@ -30,13 +30,9 @@ class Game {
     this.spawnPosition = 0;
     this.spawnPositions = [ 0, 50, 100, 150, 200, 250, 300, 350, 400, 450 ];
     this.snowballDelay = 400;
-<<<<<<< HEAD
-    this.game_over = false;
-=======
     this.gameOver = false;
     setTimeout(this.updateGameArea, this.gameSpeed)
 
->>>>>>> e4c3ff007fa0b0edd1db88fbf8ba1920d47e36c7
 
     this.addKeyPressListeners();
   }
@@ -165,7 +161,7 @@ class Game {
         e.preventDefault();
         this.keys = (this.keys || []);
         this.keys[e.keyCode] = (e.type === 'keydown');
-      // }
+      }
     });
 
     document.addEventListener('keyup', (e) => {
