@@ -17,8 +17,8 @@ class Game {
     this.skier = new Skier(40, 40, "images/Skier.png", 220, 480, "image", this);
     this.score = new Component("20px", "Consolas", "blue", 340, 40, "text", this);
     this.snowmenScore = new Component("20px", "Consolas", "blue", 340, 80, "text", this);
-    this.gameSpeed = 10;
-    this.interval = setInterval(this.updateGameArea, this.gameSpeed)
+    this.gameSpeed = 20;
+    // this.interval = setInterval(this.updateGameArea, this.gameSpeed)
     this.snowmen = [];
     this.trees = [];
     this.logs = [];
@@ -28,6 +28,8 @@ class Game {
     this.spawnPosition = 0;
     this.spawnPositions = [ 0, 50, 100, 150, 200, 250, 300, 350, 400, 450 ];
     this.snowballDelay = 400;
+    this.gameOver = false;
+    setTimeout(this.updateGameArea, this.gameSpeed)
 
     this.addKeyPressListeners();
   }
@@ -106,6 +108,39 @@ class Game {
 
     this.snowmenScore.text="Snowmen: " + this.snowmenHit;
     this.snowmenScore.update()
+
+    if (this.gameOver === false) {
+      this.increaseLevel()
+    } else {
+      this.endGame();
+    }
+
+  }
+
+  increaseLevel() {
+    switch (true) {
+      case ((this.frameNo >= 1000) && (this.frameNo < 2000)):
+        this.gameSpeed = 13;
+        console.log("speed", this.gameSpeed);
+        break;
+      case ((this.frameNo >= 2000) && (this.frameNo < 3000)):
+        this.gameSpeed = 8;
+        console.log("speed", this.gameSpeed);
+        break;
+      case ((this.frameNo >= 3000) && (this.frameNo < 5000)):
+        this.gameSpeed = 6;
+        console.log("speed", this.gameSpeed);
+        break;
+      case ((this.frameNo >= 5000) && (this.frameNo < 8000)):
+        this.gameSpeed = 5;
+        console.log("speed", this.gameSpeed);
+        break;
+      case (this.frameNo >= 8000):
+        this.gameSpeed = 4;
+        console.log("speed", this.gameSpeed);
+        break; 
+    }
+    setTimeout(this.updateGameArea, this.gameSpeed)
   }
 
   addKeyPressListeners() {
@@ -327,12 +362,12 @@ class Game {
 
     if (withinY && (upperLeftwithinX || upperRightwithinX)) {
       if (type === "snowman") {
-        this.endGame();
+        this.gameOver = true;
       } else if (type === "tree") {
-        this.endGame();
+        this.gameOver = true;
       } else if (type === "log") {
         if (!this.keys[38]) {
-          this.endGame();
+          this.gameOver = true;
         }
       }else if (type === "ruby") {
         this.snowballDelay = (this.snowballDelay/2)
@@ -349,7 +384,6 @@ class Game {
   }
 
   endGame() {
-    this.stop();
     App.displayEndMenu(this.frameNo, this.snowmenHit);
   };
 }
