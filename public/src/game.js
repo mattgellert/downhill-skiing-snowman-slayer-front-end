@@ -28,6 +28,7 @@ class Game {
     this.spawnPosition = 0;
     this.spawnPositions = [ 0, 50, 100, 150, 200, 250, 300, 350, 400, 450 ];
     this.snowballDelay = 400;
+    this.game_over = false;
 
     this.addKeyPressListeners();
   }
@@ -70,9 +71,7 @@ class Game {
     this.rubies = [...this.rubies, ...newRubies]
 
     this.detectCollisions()
-
     this.detectLogCollisions()
-
     this.detectRubyCollisions()
 
     this.score.text="SCORE: " + this.frameNo;
@@ -82,16 +81,6 @@ class Game {
     this.snowmenScore.update()
 
     this.snowmen.forEach(snowman => {
-      // let snowmanNum = parseInt(snowman.image.src[14])
-      // if (snowmanNum < 16) {
-      //   snowmanNum++
-      //   debugger
-      //   snowman.image.src = `images/Snowman${Math.floor(snowmanNum/4)}.png`
-      // } else {
-      //   snowmanNum = 4
-      //   snowman.image.src = `images/Snowman${Math.floor(snowmanNum/4)}.png`
-      // }
-
       snowman.y += 1
       snowman.update()
     })
@@ -109,22 +98,12 @@ class Game {
   }
 
   addKeyPressListeners() {
-    // let check = true;
     document.addEventListener('keydown', (e) => {
-      e.preventDefault();
-      // if (e.which === 32 && check === true) {
-      //
-      //   let snowball = new Component(9, 15, "images/Snowball.png", this.skier.x + 30, this.skier.y + 20, "image", this);
-      //   this.skier.image.src = "images/ForwardThrow/SkierForwardThrow6.png";
-      //   this.snowballs.push(snowball);
-      //
-      //   check = false;
-      //   setTimeout(()=>{check = true},this.snowballDelay)
-
-      // } else {
+      if (e.which === 37 || e.which === 38 || e.which === 39 || e.which === 32) {
+        e.preventDefault();
         this.keys = (this.keys || []);
         this.keys[e.keyCode] = (e.type === 'keydown');
-      // }
+      }
     });
 
     document.addEventListener('keyup', (e) => {
@@ -147,7 +126,7 @@ class Game {
         let temp = this.spawnPositions[i];
         this.spawnPositions[i] = this.spawnPositions[j];
         this.spawnPositions[j] = temp;
-    }
+      }
     }
   }
 
@@ -157,7 +136,6 @@ class Game {
     for (let i = 0; i < num; i++) {
       newSnowmen.push(new Component(40, 60, `images/Snowman${Math.floor(Math.random() * 3 + 1)}.png`, this.spawnPositions[this.spawnPosition], -60, "image", this));
       this.incrementSpawn()
-      // newSnowmen.push(new Component(40, 60, "images/Snowman1.png", Math.floor(Math.random() * this.background.width), -60, "image", this));
     }
     return newSnowmen;
   }
@@ -202,9 +180,7 @@ class Game {
       this.detectSkierCollision(snowman, "snowman");
       this.detectSnowmanTreeCollision(snowman)
 
-      // snowman.y > this.background.height ? false : true
       if (snowman.y > this.background.height) {
-        // snowman = null
         return false
       } else {
         return true
@@ -221,10 +197,7 @@ class Game {
       this.detectSnowballCollision(tree, "tree")
       this.detectSkierCollision(tree, "tree");
 
-
-      // tree.y > this.background.height ? false : true
       if (tree.y > this.background.height) {
-        // tree = null
         return false
       } else {
         return true
@@ -262,10 +235,7 @@ class Game {
 
       this.detectSkierCollision(log, "log");
 
-      // log.y > this.background.height ? false : true
-
       if (log.y > this.background.height) {
-        // log = null
         return false
       } else {
         return true
@@ -281,10 +251,7 @@ class Game {
 
       this.detectSkierCollision(ruby, "ruby");
 
-      // ruby.y > this.background.height ? false : true
-
       if (ruby.y > this.background.height) {
-        // ruby = null
         return false
       } else {
         return true
@@ -350,6 +317,8 @@ class Game {
 
   endGame() {
     this.stop();
+    document.removeEventListener('keydown', this.keydown)
+    document.removeEventListener('keyup', this.keyup)
     App.displayEndMenu(this.frameNo, this.snowmenHit);
   };
 }

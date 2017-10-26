@@ -18,9 +18,6 @@ class App {
   }
 
   static displayEndMenu(timeScore, snowmenScore) {
-    // document.body.removeChild(document.querySelector('canvas'))
-
-
     const leaderboardDisplay = document.querySelector('.leaderboard-display')
     const rowLabels = document.querySelectorAll('.row')
     const labels = [" ", "Time Score", "Total Snowmen", "Total Score"]
@@ -36,19 +33,30 @@ class App {
     const startDiv = document.querySelector('.start-button')
     const userInput = `
     <form>
-      <input type='text' placeholder='Enter your username'></input>
+      <input type="text" id="username" placeholder='Enter your username'>
       <button type='submit'>Save</button>
     </form>`
     startDiv.innerHTML += userInput
     document.querySelector('canvas').style.zIndex = "-1";
     document.querySelector('.leaderboard-display-wrapper').style.marginTop = "80px";
+
+
     startDiv.children[0].addEventListener('submit', (e) => {
       e.preventDefault()
-      fetch('http://localhost:3000/api/v1/users', {
-        method: 'post',
-        body: {
+      const username = document.getElementById('username').value
+      const totalScore = timeScore + snowmenScore * 100
+      const data = JSON.stringify({
+        'username': username,
+        'total_score': totalScore,
+        'snowmen_score': snowmenScore
+      })
 
-        }
+      fetch('http://localhost:3000/api/v1/update', {
+        method: 'post',
+        headers: {
+          'content-type': 'application/json'
+        },
+        body: data
       }).then(resp => resp.json())
         .then(json => {
           startDiv.children[0].innerText = 'SAVED!'
@@ -73,7 +81,7 @@ class App {
       } else {
         return 0
       }
-    }).slice(0, 4).map(user => user.username)
+    }).slice(0, 3).map(user => user.username)
     rowLabels[1].innerHTML += this.generateStatRow(labels[1], topScorers)
 
     const mostSnowmen = users.sort((a,b) => {
@@ -84,7 +92,7 @@ class App {
       } else {
         return 0
       }
-    }).slice(0, 4).map(user => user.username)
+    }).slice(0, 3).map(user => user.username)
     rowLabels[2].innerHTML += this.generateStatRow(labels[2], mostSnowmen)
 
     const totalSnowmen = users.sort((a,b) => {
@@ -95,7 +103,7 @@ class App {
       } else {
         return 0
       }
-    }).slice(0, 4).map(user => user.username)
+    }).slice(0, 3).map(user => user.username)
     rowLabels[3].innerHTML += this.generateStatRow(labels[3], totalSnowmen)
 
     this.removeMenu();
