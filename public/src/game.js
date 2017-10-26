@@ -17,13 +17,12 @@ class Game {
     this.skier = new Skier(40, 40, "images/Skier.png", 220, 480, "image", this);
     this.score = new Component("20px", "Consolas", "blue", 340, 40, "text", this);
     this.snowmenScore = new Component("20px", "Consolas", "blue", 340, 80, "text", this);
-    this.interval = setInterval(this.updateGameArea, 5)
+    this.interval = setInterval(this.updateGameArea, 30)
     this.snowmen = [];
     this.trees = [];
     this.logs = [];
     this.snowballs = [];
     this.snowmenHit = 0;
-    this.snowballTimer = 14;
     this.spawnPosition = 0;
     this.spawnPositions = [ 0, 50, 100, 150, 200, 250, 300, 350, 400, 450 ];
 
@@ -91,25 +90,26 @@ class Game {
     this.snowmenScore.text="Snowmen: " + this.snowmenHit;
     this.snowmenScore.update()
 
-    this.snowballTimer++;
     this.skier.newPos();
     this.skier.update();
   }
 
   addKeyPressListeners() {
+    let check = true;
     document.addEventListener('keydown', (e) => {
       e.preventDefault();
-      if (e.which === 32) {
-        if (this.snowballTimer > 14) {
-          let snowball = new Component(9, 15, "images/Snowball.png", this.skier.x + 30, this.skier.y + 20, "image", this);
-          this.skier.image.src = "images/ForwardThrow/SkierForwardThrow6.png";
-          this.snowballs.push(snowball);
-          this.snowballTimer = 0;
-        }
+      if (e.which === 32 && check === true) {
+
+        let snowball = new Component(9, 15, "images/Snowball.png", this.skier.x + 30, this.skier.y + 20, "image", this);
+        this.skier.image.src = "images/ForwardThrow/SkierForwardThrow6.png";
+        this.snowballs.push(snowball);
+
+        check = false;
+        setTimeout(()=>{check = true},400)
+
       } else {
         this.keys = (this.keys || []);
         this.keys[e.keyCode] = (e.type === 'keydown');
-
       }
     });
 
@@ -248,7 +248,6 @@ class Game {
         }
       }
       if (snowball.y < 0) {
-        // snowball = null
         return false
       } else {
         return true
