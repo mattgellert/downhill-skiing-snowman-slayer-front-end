@@ -165,7 +165,7 @@ class Game {
         e.preventDefault();
         this.keys = (this.keys || []);
         this.keys[e.keyCode] = (e.type === 'keydown');
-      }
+      // }
     });
 
     document.addEventListener('keyup', (e) => {
@@ -378,12 +378,9 @@ class Game {
   }
 
   endGame() {
-<<<<<<< HEAD
     this.stop();
     document.removeEventListener('keydown', this.keydown)
     document.removeEventListener('keyup', this.keyup)
-=======
->>>>>>> e4c3ff007fa0b0edd1db88fbf8ba1920d47e36c7
     App.displayEndMenu(this.frameNo, this.snowmenHit);
   };
 }

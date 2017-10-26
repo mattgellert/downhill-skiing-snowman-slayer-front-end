@@ -18,6 +18,12 @@ class App {
   }
 
   static displayEndMenu(timeScore, snowmenScore) {
+<<<<<<< Updated upstream
+=======
+    // document.body.removeChild(document.querySelector('canvas'))
+
+
+>>>>>>> Stashed changes
     const leaderboardDisplay = document.querySelector('.leaderboard-display')
     const rowLabels = document.querySelectorAll('.row')
     const labels = [" ", "Time Score", "Total Snowmen", "Total Score"]
@@ -39,8 +45,11 @@ class App {
     startDiv.innerHTML += userInput
     document.querySelector('canvas').style.zIndex = "-1";
     document.querySelector('.leaderboard-display-wrapper').style.marginTop = "80px";
+<<<<<<< Updated upstream
 
 
+=======
+>>>>>>> Stashed changes
     startDiv.children[0].addEventListener('submit', (e) => {
       e.preventDefault()
       const username = document.getElementById('username').value
