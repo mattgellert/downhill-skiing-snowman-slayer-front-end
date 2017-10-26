@@ -40,9 +40,13 @@ class Game {
     this.snowmenScore = new Component("20px", "Consolas", "blue", 340, 80, "text", this);
     this.interval = setInterval(this.updateGameArea, 5)
     this.snowmen = [];
+    this.trees = [];
+    this.logs = [];
     this.snowballs = [];
     this.snowmenHit = 0;
     this.snowballTimer = 14;
+    this.spawnPosition = 0;
+    this.spawnPositions = [ 0, 50, 100, 150, 200, 250, 300, 350, 400, 450 ];
 
     this.addKeyPressListeners();
   }
@@ -64,18 +68,28 @@ class Game {
     this.background.speedY = 1;
     this.background.newPos();
     this.background.update();
-    this.skier.newPos();
-    this.skier.update();
+    // this.skier.newPos();
+    // this.skier.update();
 
     this.snowballs.forEach(snowball => {
       snowball.y -= 5
       snowball.update()
     })
 
-    let newSnowmen = this.snowmanCreator(1.05)
+    let newSnowmen = this.snowmanCreator(1.02)
     this.snowmen = [...this.snowmen, ...newSnowmen]
 
+    let newTrees = this.treeCreator(1.01)
+    this.trees = [...this.trees, ...newTrees]
+
+    let newLogs = this.logCreator(1.005)
+    this.logs = [...this.logs, ...newLogs]
+
     this.detectCollisions(this.snowmen)
+
+    this.detectTreeCollisions(this.trees)
+
+    this.detectLogCollisions(this.logs)
 
     this.score.text="SCORE: " + this.frameNo;
     this.score.update();
@@ -84,6 +98,8 @@ class Game {
     this.snowmenScore.update()
 
     this.snowballTimer++;
+    this.skier.newPos();
+    this.skier.update();
   }
 
   addKeyPressListeners() {
@@ -115,13 +131,49 @@ class Game {
     this.skier.image.src = "images/Skier.png";
   }
 
+  incrementSpawn() {
+    if (this.spawnPosition < (this.spawnPositions.length - 1)) {
+      this.spawnPosition++
+    } else {
+      this.spawnPosition = 0
+      for (let i = this.spawnPositions.length - 1; i > 0; i--) {
+        let j = Math.floor(Math.random() * (i + 1));
+        let temp = this.spawnPositions[i];
+        this.spawnPositions[i] = this.spawnPositions[j];
+        this.spawnPositions[j] = temp;
+    }
+    }
+  }
+
   snowmanCreator(difficulty) {
     let num = Math.floor(Math.random() * difficulty);
     let newSnowmen = [];
-    for (var i = 0; i < num; i++) {
-      newSnowmen.push(new Component(40, 60, "images/Snowman1.png", Math.floor(Math.random() * this.background.width), -10, "image", this));
+    for (let i = 0; i < num; i++) {
+      newSnowmen.push(new Component(40, 60, "images/Snowman1.png", this.spawnPositions[this.spawnPosition], -60, "image", this));
+      this.incrementSpawn()
+      // newSnowmen.push(new Component(40, 60, "images/Snowman1.png", Math.floor(Math.random() * this.background.width), -60, "image", this));
     }
     return newSnowmen;
+  }
+
+  treeCreator(difficulty) {
+    let num = Math.floor(Math.random() * difficulty);
+    let newTrees = [];
+    for (let i = 0; i < num; i++) {
+      newTrees.push(new Component(40, 60, "images/Tree.png", this.spawnPositions[this.spawnPosition], -60, "image", this));
+      this.incrementSpawn()
+    }
+    return newTrees;
+  }
+
+  logCreator(difficulty) {
+    let num = Math.floor(Math.random() * difficulty);
+    let newLogs = [];
+    for (let i = 0; i < num; i++) {
+      newLogs.push(new Component(50, 10, "images/Log.png", this.spawnPositions[this.spawnPosition], -60, "image", this));
+      this.incrementSpawn()
+    }
+    return newLogs;
   }
 
   detectCollisions(snowmen) {
@@ -130,7 +182,7 @@ class Game {
       snowman.newPos()
       snowman.update()
 
-      this.detectSnowballCollision(snowman)
+      this.detectSnowballCollision(snowman, "snowman")
       this.detectSkierCollision(snowman, "snowman");
 
       // snowman.y > this.background.height ? false : true
@@ -143,21 +195,63 @@ class Game {
     })
   }
 
-  detectSnowballCollision(snowman) {
+  detectTreeCollisions(trees) {
+    trees = trees.filter(tree => {
+      tree.speedY = 1;
+      tree.newPos()
+      tree.update()
+
+      this.detectSnowballCollision(tree, "tree")
+      this.detectSkierCollision(tree, "tree");
+
+      // tree.y > this.background.height ? false : true
+      if (tree.y > this.background.height) {
+        // tree = null
+        return false
+      } else {
+        return true
+      }
+    })
+  }
+
+  detectLogCollisions(logs) {
+    logs = logs.filter(log => {
+      log.speedY = 1;
+      log.newPos()
+      log.update()
+
+      this.detectSkierCollision(log, "log");
+
+      // log.y > this.background.height ? false : true
+
+      if (log.y > this.background.height) {
+        // log = null
+        return false
+      } else {
+        return true
+      }
+    })
+  }
+
+  detectSnowballCollision(component, type) {
     this.snowballs = this.snowballs.filter(snowball => {
 
-      let withinY = (snowball.y <= (snowman.y + snowman.height) && snowball.y >= snowman.y)
-      let upperLeftwithinX = (snowball.x >= snowman.x && snowball.x <= (snowman.x + snowman.width))
-      let upperRightwithinX = (snowball.x + snowball.width) >= snowman.x && (snowball.x + snowball.width) <= (snowman.x + snowman.width)
+      let withinY = (snowball.y <= (component.y + component.height) && snowball.y >= component.y)
+      let upperLeftwithinX = (snowball.x >= component.x && snowball.x <= (component.x + component.width))
+      let upperRightwithinX = (snowball.x + snowball.width) >= component.x && (snowball.x + snowball.width) <= (component.x + component.width)
 
       if (withinY && (upperLeftwithinX || upperRightwithinX)) {
-        snowman.image.src = "images/SnowmanDeath2.png"
-        setTimeout(function(){
-          snowman.height = 0
-          snowman.width = 0
-        }, 200)
-        this.snowmenHit++
-        return false
+        if (type === "snowman") {
+          component.image.src = "images/SnowmanDeath2.png"
+          setTimeout(function(){
+            component.height = 0
+            component.width = 0
+          }, 200)
+          this.snowmenHit++
+          return false
+        } else if (type === "tree") {
+          return false
+        }
       }
       if (snowball.y < 0) {
         // snowball = null
@@ -177,7 +271,11 @@ class Game {
       if (type === "snowman") {
         this.endGame();
       } else if (type === "tree") {
-        // ADD TREE LOGIC
+        this.endGame();
+      } else if (type === "log") {
+        if (!this.keys[38]) {
+          this.endGame();
+        }
       }
     }
   }

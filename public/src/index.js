@@ -67,6 +67,9 @@ class Skier extends Component {
         this.x += 2;
       };
     };
+    if (this.game.keys && this.game.keys[38]) {
+      this.image.src = "images/SkierJump.png";
+    };
   };
 
 }
