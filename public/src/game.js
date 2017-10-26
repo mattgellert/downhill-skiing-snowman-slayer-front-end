@@ -48,13 +48,33 @@ class Game {
     this.background.speedY = 1;
     this.background.newPos();
     this.background.update();
-    // this.skier.newPos();
-    // this.skier.update();
 
     this.snowballs.forEach(snowball => {
       snowball.y -= 5
       snowball.update()
     })
+
+
+    let newSnowmen = this.snowmanCreator(1.02)
+    this.snowmen = [...this.snowmen, ...newSnowmen]
+
+    let newTrees = this.treeCreator(1.01)
+    this.trees = [...this.trees, ...newTrees]
+
+    let newLogs = this.logCreator(1.005)
+    this.logs = [...this.logs, ...newLogs]
+
+
+
+    this.detectCollisions()
+
+    this.detectLogCollisions()
+
+    this.score.text="SCORE: " + this.frameNo;
+    this.score.update();
+
+    this.snowmenScore.text="Snowmen: " + this.snowmenHit;
+    this.snowmenScore.update()
 
     this.snowmen.forEach(snowman => {
       // let snowmanNum = parseInt(snowman.image.src[14])
@@ -71,26 +91,7 @@ class Game {
       snowman.update()
     })
 
-    let newSnowmen = this.snowmanCreator(1.02)
-    this.snowmen = [...this.snowmen, ...newSnowmen]
-
-    let newTrees = this.treeCreator(1.01)
-    this.trees = [...this.trees, ...newTrees]
-
-    let newLogs = this.logCreator(1.005)
-    this.logs = [...this.logs, ...newLogs]
-
-    this.detectCollisions(this.snowmen)
-
-    this.detectTreeCollisions(this.trees)
-
-    this.detectLogCollisions(this.logs)
-
-    this.score.text="SCORE: " + this.frameNo;
-    this.score.update();
-
-    this.snowmenScore.text="Snowmen: " + this.snowmenHit;
-    this.snowmenScore.update()
+    this.detectTreeCollisions()
 
     this.skier.newPos();
     this.skier.update();
@@ -172,14 +173,15 @@ class Game {
     return newLogs;
   }
 
-  detectCollisions(snowmen) {
-    snowmen = snowmen.filter(snowman => {
+  detectCollisions() {
+    this.snowmen = this.snowmen.filter(snowman => {
       snowman.speedY = 1;
       snowman.newPos()
       snowman.update()
 
       this.detectSnowballCollision(snowman, "snowman")
       this.detectSkierCollision(snowman, "snowman");
+      this.detectSnowmanTreeCollision(snowman)
 
       // snowman.y > this.background.height ? false : true
       if (snowman.y > this.background.height) {
@@ -191,14 +193,15 @@ class Game {
     })
   }
 
-  detectTreeCollisions(trees) {
-    trees = trees.filter(tree => {
+  detectTreeCollisions() {
+    this.trees = this.trees.filter(tree => {
       tree.speedY = 1;
       tree.newPos()
       tree.update()
 
       this.detectSnowballCollision(tree, "tree")
       this.detectSkierCollision(tree, "tree");
+
 
       // tree.y > this.background.height ? false : true
       if (tree.y > this.background.height) {
@@ -210,8 +213,30 @@ class Game {
     })
   }
 
-  detectLogCollisions(logs) {
-    logs = logs.filter(log => {
+  detectSnowmanTreeCollision(snowman) {
+    let check;
+    this.trees.forEach(tree => {
+      let withinY = (snowman.y <= (tree.y + tree.height) && snowman.y >= tree.y)
+      let upperLeftwithinX = (snowman.x >= tree.x && snowman.x <= (tree.x + tree.width))
+      let upperRightwithinX = (snowman.x + snowman.width) >= tree.x && (snowman.x + snowman.width) <= (tree.x + tree.width)
+
+      if (withinY && (upperLeftwithinX || upperRightwithinX)) {
+          snowman.image.src = "images/SnowmanDeath2.png"
+          snowman.y -= 1;
+          setTimeout(function(){
+            snowman.height = 0
+            snowman.width = 0
+          }, 100)
+          check = false;
+      } else {
+        check = true;
+      }
+    })
+    return check;
+  }
+
+  detectLogCollisions() {
+    this.logs = this.logs.filter(log => {
       log.speedY = 1;
       log.newPos()
       log.update()
@@ -277,14 +302,6 @@ class Game {
 
   endGame() {
     this.stop();
-    document.body.removeChild(document.querySelector('canvas'))
-    this.displayScore();
-    setTimeout(() => {
-      location.reload(true)
-    }, )
+    App.displayEndMenu(this.frameNo, this.snowmenHit);
   };
-
-  displayScore() {
-    console.log("user score:",parseInt(this.score.text.slice(7)))
-  }
 }

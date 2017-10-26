@@ -10,10 +10,50 @@ class App {
   }
 
   static generateStatRow(label, cells) {
-    return `<div class='row-label cell'><p>${label}</p></div>
-    <div class='cell'><p>${cells[0]}</p></div>
-    <div class='cell'><p>${cells[1]}</p></div>
-    <div class='cell'><p>${cells[2]}</p></div>`
+    let row = `<div class='row-label cell'><p>${label}</p></div>`
+    for (let i = 0; i < cells.length; i++) {
+      row += `<div class='cell'><p>${cells[i]}</p></div>`
+    }
+    return row
+  }
+
+  static displayEndMenu(timeScore, snowmenScore) {
+    document.body.removeChild(document.querySelector('canvas'))
+
+    const leaderboardDisplay = document.querySelector('.leaderboard-display')
+    const rowLabels = document.querySelectorAll('.row')
+    const labels = [" ", "Time Score", "Total Snowmen", "Total Score"]
+
+    rowLabels[0].innerHTML += this.generateStatRow(labels[0], ["Game Stats"])
+    rowLabels[1].innerHTML += this.generateStatRow(labels[1], [timeScore])
+    rowLabels[2].innerHTML += this.generateStatRow(labels[2], [`${snowmenScore} Slayed x 100`])
+    rowLabels[3].innerHTML += this.generateStatRow(labels[3], [`${timeScore + snowmenScore * 100}`])
+
+    const headerImage = document.querySelector('.header-image')
+    headerImage.src = "images/game_over.png"
+
+    const startDiv = document.querySelector('.start-button')
+    const userInput = `
+    <form>
+      <input type='text' placeholder='Enter your username'></input>
+      <button type='submit'>Save</button>
+    </form>`
+    startDiv.innerHTML += userInput
+    startDiv.children[0].addEventListener('submit', (e) => {
+      e.preventDefault()
+      fetch('http://localhost:3000/api/v1/users', {
+        method: 'post',
+        body: {
+
+        }
+      }).then(resp => resp.json())
+        .then(json => {
+          startDiv.children[0].innerText = 'SAVED!'
+          setTimeout(() => {
+            location.reload(true)
+          }, 2000)
+        })
+    })
   }
 
   static displayStartMenu(users) {
@@ -55,10 +95,13 @@ class App {
     }).slice(0, 4).map(user => user.username)
     rowLabels[3].innerHTML += this.generateStatRow(labels[3], totalSnowmen)
 
+    this.removeMenu();
+  }
 
+  static removeMenu() {
     const startDiv = document.querySelector('.start-button')
+    startDiv.innerHTML += "<button>New Game</button>"
     const leaderboardRows = document.querySelectorAll('.row')
-    startDiv.innerHTML = "<button>Start</button>"
     startDiv.children[0].addEventListener('click', (e) => {
       e.preventDefault()
       startDiv.innerHTML = ''
