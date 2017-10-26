@@ -6,23 +6,30 @@
     <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
     <link rel="stylesheet" type="text/css" href="index.css">
   </head>
-  <body>
-    <h1>Downhill Skiing Snowman SLAYER</h1>
+  <body class="body">
 
-    <br>
-
-    <div id="leaderboard-wrapper">
-      <div id="spacer"></div>
-      <div id="leaderboard-display-wrapper">
-        <div id="leaderboard-display"></div>
-        <div id="start-button"></div>
+    <div class="container">
+      <div class="leaderboard-wrapper">
+        <div class="leaderboard-display-wrapper">
+          <div class="header">
+            <img class="header-image" src="images/gameTitle.png"></img>
+          </div>
+          <div class="leaderboard-display">
+            <div class="row labels"></div>
+            <div class="row first"></div>
+            <div class="row second"></div>
+            <div class="row third"></div>
+          </div>
+          <div class="start-button"></div>
+        </div>
       </div>
-      <div id="spacer"></div>
     </div>
-
 
 
     <script type="text/javascript" src='src/index.js'></script>
     <script type="text/javascript" src='src/app.js'></script>
+    <script type="text/javascript" src='src/game.js'></script>
+    <script type="text/javascript" src='src/component.js'></script>
+    <script type="text/javascript" src='src/skier.js'></script>
   </body>
 </html>

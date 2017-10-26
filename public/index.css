@@ -14,21 +14,71 @@ canvas {
     padding: 0;
 }
 
-h1 {
-  text-align: center;
+p {
+  margin: auto;
 }
 
-div#leaderboard-wrapper {
+.leaderboard-display {
+  display: block;
+      margin: 16px 30px 20px;
+}
+
+.row {
   display: flex;
+  flex-direction: row;
 }
 
-div#spacer {
-  flex: 0.5;
+.row-label, .labels {
+  font-weight: 900;
 }
-div#leaderboard-display-wrapper {
-  flex: 1;
+
+.cell {
+  flex: 25%;
+  border-style: ridge;
+  height: 30px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.start-button {
+  margin-bottom: 20px;
+}
+
+.body {
+  background: #010101;
+  font-family: "Courier New", Courier, "Lucida Sans Typewriter", monospace;
+}
+
+
+.header {
+  background: #d9e2e8;
+}
+
+.header-image {
+  margin-top: 10px;
+  height: 150px;
+  display: block;
+  width: 100%;
+}
+.container {
+  height: 600px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.leaderboard-wrapper {
+  margin: auto;
+}
+
+.leaderboard-display-wrapper {
+  margin: auto;
+  width: 700px;
   text-align: center;
   border-style: ridge;
+  background: #d9e2e8;
 }
 
 button {
@@ -40,17 +90,15 @@ button {
   text-decoration: none;
   outline: none;
   color: #fff;
-  background-color: #4CAF50;
-  border: none;
-  border-radius: 10px;
-  box-shadow: 0 5px #999;
+  background-color: #5faf4c;
+  border-radius: 5px;
+  font-family: "Courier New", Courier, "Lucida Sans Typewriter", monospace;
 }
 
 button:hover {background-color: #3e8e41}
 
 button:active {
   background-color: #3e8e41;
-  box-shadow: 0 5px #666;
   transform: translateY(4px);
 }
 
