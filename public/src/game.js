@@ -120,7 +120,11 @@ class Game {
         e.preventDefault();
         this.keys = (this.keys || []);
         this.keys[e.keyCode] = (e.type === 'keydown');
+        if (e.which === 32) {
+          App.playSound('spear_throw-Mike_Koenig-2064202968.mp3')
+        }
         if (e.which === 38) {
+          App.playSound('Mario_Jumping-Mike_Koenig-989896458.mp3')
           this.jump = true;
         }
       }
@@ -128,6 +132,10 @@ class Game {
 
     document.addEventListener('keyup', (e) => {
       if (e.which !== 38) {
+        this.keys[e.keyCode] = (e.type === 'keydown');
+        this.clearMove();
+      }
+      if (e.which === 38 && this.jump === false) {
         this.keys[e.keyCode] = (e.type === 'keydown');
         this.clearMove();
       }
@@ -291,6 +299,7 @@ class Game {
       if (withinY && (upperLeftwithinX || upperRightwithinX)) {
         if (type === "snowman") {
           component.image.src = "images/SnowmanDeath2.png"
+          App.playSound('hit.mp3')
           setTimeout(function(){
             component.height = 0
             component.width = 0
@@ -320,10 +329,11 @@ class Game {
       } else if (type === "tree") {
         this.gameOver = true;
       } else if (type === "log") {
-        if (!this.keys[38]) {
+        if (!this.keys[38] && this.jump === false) {
           this.gameOver = true;
         }
       }else if (type === "ruby") {
+        // App.playSound('gem.mp3')
         this.snowballDelay = (this.snowballDelay/2)
         setTimeout(()=> {
           component.height = 0

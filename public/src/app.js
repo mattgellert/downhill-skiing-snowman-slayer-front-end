@@ -86,7 +86,19 @@ class App {
     })
   }
 
+  static playMainSound(path) {
+    const audio = new Audio(`assets/audio/${path}`)
+    audio.play()
+  }
+
+  static playSound(path) {
+    const audio = new Audio(`assets/audio/${path}`)
+    audio.play()
+    setTimeout(()=>{audio.pause()},250)
+  }
+
   static displayStartMenu(users) {
+    this.playMainSound('05-Binrpilot-Underground.mp3')
     const leaderboardDisplay = document.querySelector('.leaderboard-display')
     const rowLabels = document.querySelectorAll('.row')
     const labels = ["Leaderboard", "Top Score", "Most Snowmen", "Total Snowmen"]
