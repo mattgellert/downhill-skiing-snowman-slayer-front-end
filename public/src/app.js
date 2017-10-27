@@ -17,6 +17,14 @@ class App {
     return row
   }
 
+  static generateStatRow2(label, cells) {
+    let row = `<div class='row-label cell'><p>${label}</p></div>`
+    for (let i = 0; i < cells.length; i++) {
+      row += `<div class='cell'><p>${cells[i][0]}: ${cells[i][1]}</p></div>`
+    }
+    return row
+  }
+
   static displayEndMenu(timeScore, snowmenScore) {
 
     const leaderboardDisplay = document.querySelector('.leaderboard-display')
@@ -34,7 +42,7 @@ class App {
     const startDiv = document.querySelector('.start-button')
     const userInput = `
     <form>
-      <input type="text" id="username" placeholder='Enter your username'>
+      <input type="text" class="username" id="username" placeholder='Enter your username'>
       <button type='submit'>Save</button>
     </form>`
     startDiv.innerHTML += userInput
@@ -71,7 +79,7 @@ class App {
     const leaderboardDisplay = document.querySelector('.leaderboard-display')
     const rowLabels = document.querySelectorAll('.row')
     const labels = ["Leaderboard", "Top Score", "Most Snowmen", "Total Snowmen"]
-    rowLabels[0].innerHTML += this.generateStatRow(labels[0], ['#1', '#2', '#3'])
+    rowLabels[0].innerHTML += this.generateStatRow2(labels[0], ['#1', '#2', '#3'])
 
     const topScorers = users.sort((a,b) => {
       if (a.top_score < b.top_score) {
@@ -81,8 +89,8 @@ class App {
       } else {
         return 0
       }
-    }).slice(0, 3).map(user => user.username)
-    rowLabels[1].innerHTML += this.generateStatRow(labels[1], topScorers)
+    }).slice(0, 3).map(user => [user.username, user.top_score])
+    rowLabels[1].innerHTML += this.generateStatRow2(labels[1], topScorers)
 
     const mostSnowmen = users.sort((a,b) => {
       if (a.most_snowmen < b.most_snowmen) {
@@ -92,8 +100,8 @@ class App {
       } else {
         return 0
       }
-    }).slice(0, 3).map(user => user.username)
-    rowLabels[2].innerHTML += this.generateStatRow(labels[2], mostSnowmen)
+    }).slice(0, 3).map(user => [user.username, user.most_snowmen])
+    rowLabels[2].innerHTML += this.generateStatRow2(labels[2], mostSnowmen)
 
     const totalSnowmen = users.sort((a,b) => {
       if (a.total_snowmen < b.total_snowmen) {
@@ -103,8 +111,8 @@ class App {
       } else {
         return 0
       }
-    }).slice(0, 3).map(user => user.username)
-    rowLabels[3].innerHTML += this.generateStatRow(labels[3], totalSnowmen)
+    }).slice(0, 3).map(user => [user.username, user.total_snowmen])
+    rowLabels[3].innerHTML += this.generateStatRow2(labels[3], totalSnowmen)
 
     this.removeMenu();
   }

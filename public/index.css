@@ -17,11 +17,21 @@ canvas {
 
 p {
   margin: auto;
+  line-height: 1.5;
 }
 
 .leaderboard-display {
   display: block;
   margin: 16px 30px 20px;
+}
+
+.username {
+    height: 30px;
+    margin-right: 10px;
+    width: 300px;
+    padding: 0 10px;
+    outline: none;
+    /* padding: 10px; */
 }
 
 .row {
@@ -36,7 +46,7 @@ p {
 .cell {
   flex: 25%;
   border-style: ridge;
-  height: 30px;
+  height: 50px;
   position: relative;
   display: flex;
   align-items: center;

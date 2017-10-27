@@ -5,8 +5,6 @@ class Game {
     this.canvas.width = 480;
     this.canvas.height = 540;
     this.context = this.canvas.getContext("2d");
-
-
     this.updateGameArea = this.updateGameArea.bind(this)
   }
 
@@ -19,8 +17,7 @@ class Game {
     this.snowmenScore = new Component("20px", "Consolas", "blue", 340, 80, "text", this);
     this.levelImage = new Component("20px", "Consolas", "red", 30, 40, "text", this);
     this.levelImage.text = "LEVEL 1"
-    this.gameSpeed = 16;
-    // this.interval = setInterval(this.updateGameArea, this.gameSpeed)
+    this.gameSpeed = 13;
     this.snowmen = [];
     this.trees = [];
     this.logs = [];
@@ -31,8 +28,8 @@ class Game {
     this.spawnPositions = [ 0, 50, 100, 150, 200, 250, 300, 350, 400, 450 ];
     this.snowballDelay = 400;
     this.gameOver = false;
+    this.jump = false;
     setTimeout(this.updateGameArea, this.gameSpeed)
-
 
     this.addKeyPressListeners();
   }
@@ -77,14 +74,6 @@ class Game {
     this.detectCollisions()
     this.detectLogCollisions()
     this.detectRubyCollisions()
-    //
-    // this.score.text="SCORE: " + this.frameNo;
-    // this.score.update();
-    //
-    // this.snowmenScore.text="Snowmen: " + this.snowmenHit;
-    // this.snowmenScore.update()
-
-
 
     this.snowmen.forEach(snowman => {
       snowman.y += 1
@@ -111,46 +100,16 @@ class Game {
   }
 
   increaseLevel() {
-    switch (true) {
-      case ((this.frameNo >= 0) && (this.frameNo < 1000)):
-        this.levelImage.text= "LEVEL 1"
-        this.levelImage.update()
-        break;
-      case ((this.frameNo >= 1000) && (this.frameNo < 2000)):
-        this.levelImage.text= "LEVEL 2"
-        this.levelImage.update()
-        this.gameSpeed = 13;
-        break;
-      case ((this.frameNo >= 2000) && (this.frameNo < 3000)):
-        this.levelImage.text = "LEVEL 3"
-        this.levelImage.update()
-        this.gameSpeed = 8;
-        break;
-      case ((this.frameNo >= 3000) && (this.frameNo < 5000)):
-        this.levelImage.text = "LEVEL 4"
-        this.levelImage.update()
-        this.gameSpeed = 6;
-        break;
-      case ((this.frameNo >= 5000) && (this.frameNo < 8000)):
-        this.levelImage.text = "LEVEL 5"
-        this.levelImage.update()
-        this.gameSpeed = 5;
-        break;
-      case ((this.frameNo >= 8000) && (this.frameNo < 11000)):
-        this.levelImage.text = "LEVEL 6"
-        this.levelImage.update()
-        this.gameSpeed = 4;
-        break;
-      case ((this.frameNo >= 11000) && (this.frameNo < 14000)):
-        this.levelImage.text = "LEVEL 7"
-        this.levelImage.update()
-        this.gameSpeed = 3;
-        break;
-      case ((this.frameNo >= 14000)):
-        this.levelImage.text = "LEVEL 8"
-        this.levelImage.update()
-        this.gameSpeed = 2;
-        break;
+    if (this.frameNo % 1000 === 0) {
+      this.levelImage.text = `LEVEL ${Math.floor(this.frameNo/1000) + 1}`
+      this.levelImage.update();
+      if (this.gameSpeed> 1) {
+        this.gameSpeed = 0.7 * this.gameSpeed;
+      } else {
+        this.gameSpeed = 1;
+      }
+    } else {
+      this.levelImage.update();
     }
     setTimeout(this.updateGameArea, this.gameSpeed)
   }
@@ -161,12 +120,17 @@ class Game {
         e.preventDefault();
         this.keys = (this.keys || []);
         this.keys[e.keyCode] = (e.type === 'keydown');
+        if (e.which === 38) {
+          this.jump = true;
+        }
       }
     });
 
     document.addEventListener('keyup', (e) => {
-      this.keys[e.keyCode] = (e.type === 'keydown');
-      this.clearMove();
+      if (e.which !== 38) {
+        this.keys[e.keyCode] = (e.type === 'keydown');
+        this.clearMove();
+      }
     });
   }
 
