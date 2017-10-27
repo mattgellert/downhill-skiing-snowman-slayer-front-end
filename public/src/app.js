@@ -4,7 +4,7 @@ class App {
   }
 
   static init() {
-    fetch('http://localhost:3000/api/v1/users')
+    fetch('http://localhost:3000/api/v1/leaderboard')
       .then(resp => resp.json())
       .then(json => this.displayStartMenu(json))
   }
@@ -17,10 +17,14 @@ class App {
     return row
   }
 
-  static generateStatRow2(label, cells) {
+  static generateStatRow2(label, cells, attribute) {
     let row = `<div class='row-label cell'><p>${label}</p></div>`
     for (let i = 0; i < cells.length; i++) {
-      row += `<div class='cell'><p>${cells[i][0]}: ${cells[i][1]}</p></div>`
+      if (attribute === 'leaderboard') {
+        row += `<div class='cell'><p>${cells[i][0]}: ${cells[i][1]}</p></div>`
+      } else {
+        row += `<div class='cell'><p>${cells[i].username}: ${cells[i][attribute]}</p></div>`
+      }
     }
     return row
   }
@@ -40,6 +44,9 @@ class App {
     headerImage.src = "images/game_over.png"
 
     const startDiv = document.querySelector('.start-button')
+
+
+
     const userInput = `
     <form>
       <input type="text" class="username" id="username" placeholder='Enter your username'>
@@ -51,6 +58,7 @@ class App {
 
     startDiv.children[0].addEventListener('submit', (e) => {
       e.preventDefault()
+
       const username = document.getElementById('username').value
       const totalScore = timeScore + snowmenScore * 100
       const data = JSON.stringify({
@@ -67,10 +75,13 @@ class App {
         body: data
       }).then(resp => resp.json())
         .then(json => {
+          const userRank = `
+          <p>Top Score Rank: #${json.top_score_rank} || Most Snowmen Rank: #${json.most_snowmen_rank} || Total Snowmen Rank: #${json.total_snowmen_rank}</p>`;
+          startDiv.innerHTML += userRank;
           startDiv.children[0].innerText = 'SAVED!'
           setTimeout(() => {
             location.reload(true)
-          }, 2000)
+          }, 2500)
         })
     })
   }
@@ -79,40 +90,10 @@ class App {
     const leaderboardDisplay = document.querySelector('.leaderboard-display')
     const rowLabels = document.querySelectorAll('.row')
     const labels = ["Leaderboard", "Top Score", "Most Snowmen", "Total Snowmen"]
-    rowLabels[0].innerHTML += this.generateStatRow2(labels[0], ['#1', '#2', '#3'])
-
-    const topScorers = users.sort((a,b) => {
-      if (a.top_score < b.top_score) {
-        return 1
-      } else if (a.top_score > b.top_score) {
-        return -1
-      } else {
-        return 0
-      }
-    }).slice(0, 3).map(user => [user.username, user.top_score])
-    rowLabels[1].innerHTML += this.generateStatRow2(labels[1], topScorers)
-
-    const mostSnowmen = users.sort((a,b) => {
-      if (a.most_snowmen < b.most_snowmen) {
-        return 1
-      } else if (a.most_snowmen > b.most_snowmen) {
-        return -1
-      } else {
-        return 0
-      }
-    }).slice(0, 3).map(user => [user.username, user.most_snowmen])
-    rowLabels[2].innerHTML += this.generateStatRow2(labels[2], mostSnowmen)
-
-    const totalSnowmen = users.sort((a,b) => {
-      if (a.total_snowmen < b.total_snowmen) {
-        return 1
-      } else if (a.total_snowmen > b.total_snowmen) {
-        return -1
-      } else {
-        return 0
-      }
-    }).slice(0, 3).map(user => [user.username, user.total_snowmen])
-    rowLabels[3].innerHTML += this.generateStatRow2(labels[3], totalSnowmen)
+    rowLabels[0].innerHTML += this.generateStatRow2(labels[0], ['#1', '#2', '#3'], 'leaderboard')
+    rowLabels[1].innerHTML += this.generateStatRow2(labels[1], users.top_scorers, 'top_score')
+    rowLabels[2].innerHTML += this.generateStatRow2(labels[2], users.top_slayers, 'most_snowmen')
+    rowLabels[3].innerHTML += this.generateStatRow2(labels[3], users.genocidal_maniacs, 'total_snowmen')
 
     this.removeMenu();
   }
