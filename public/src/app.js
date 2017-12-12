@@ -54,6 +54,8 @@ class App {
     headerImage.src = "images/game_over.png"
     const instructionsImage = document.querySelector('.instructions-image')
     instructionsImage.src = ""
+    const instructionsHint = document.querySelector('.hints')
+    instructionsHint.innerHTML = ""
 
     const startDiv = document.querySelector('.start-button')
 
