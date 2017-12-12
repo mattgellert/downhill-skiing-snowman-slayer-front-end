@@ -111,6 +111,7 @@ class Game {
     } else {
       this.levelImage.update();
     }
+    console.log(`level: ${Math.floor(this.frameNo/1000) + 1} || speed: ${this.gameSpeed}`)
     setTimeout(this.updateGameArea, this.gameSpeed)
   }
 
@@ -123,7 +124,7 @@ class Game {
         if (e.which === 32) {
           App.playSound('spear_throw-Mike_Koenig-2064202968.mp3')
         }
-        if (e.which === 38) {
+        if (e.which === 38 && this.jump === false) {
           App.playSound('Mario_Jumping-Mike_Koenig-989896458.mp3')
           this.jump = true;
         }

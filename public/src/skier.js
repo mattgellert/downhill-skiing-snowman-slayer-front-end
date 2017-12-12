@@ -21,11 +21,20 @@ class Skier extends Component {
     if (this.game.keys && this.game.keys[38] && this.game.jump === true) {
       this.image.src = "images/SkierJump.png";
 
-      setTimeout(()=>{
-        this.image.src = "images/Skier.png";
-        this.game.jump = false;
-        this.game.keys[38] = false;
-      }, 500)
+      if ((Math.floor(this.frameNo/1000) + 1) < 4) {
+        setTimeout(()=>{
+          this.image.src = "images/Skier.png";
+          this.game.jump = false;
+          this.game.keys[38] = false;
+        }, 500)
+      } else {
+        setTimeout(()=>{
+          this.image.src = "images/Skier.png";
+          this.game.jump = false;
+          this.game.keys[38] = false;
+        }, 400)
+      }
+
     };
   };
 

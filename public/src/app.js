@@ -7,6 +7,16 @@ class App {
     fetch('http://localhost:3000/api/v1/leaderboard')
       .then(resp => resp.json())
       .then(json => this.displayStartMenu(json))
+       const startDiv = document.querySelector('.start-button')
+       startDiv.innerHTML += "<button>New Game</button>"
+       const leaderboardRows = document.querySelectorAll('.row')
+       startDiv.children[0].addEventListener('click', (e) => {
+         e.preventDefault()
+         startDiv.innerHTML = ''
+         leaderboardRows.forEach(row => {row.innerHTML = ''})
+         startDiv.innerHTML = ''
+         this.startGame();
+       })
   }
 
   static generateStatRow(label, cells) {
@@ -83,6 +93,9 @@ class App {
             location.reload(true)
           }, 2500)
         })
+        setTimeout(() => {
+          location.reload(true)
+        }, 3500)
     })
   }
 
@@ -106,22 +119,22 @@ class App {
     rowLabels[1].innerHTML += this.generateStatRow2(labels[1], users.top_scorers, 'top_score')
     rowLabels[2].innerHTML += this.generateStatRow2(labels[2], users.top_slayers, 'most_snowmen')
     rowLabels[3].innerHTML += this.generateStatRow2(labels[3], users.genocidal_maniacs, 'total_snowmen')
-
-    this.removeMenu();
+    //
+    // this.removeMenu();
   }
 
-  static removeMenu() {
-    const startDiv = document.querySelector('.start-button')
-    startDiv.innerHTML += "<button>New Game</button>"
-    const leaderboardRows = document.querySelectorAll('.row')
-    startDiv.children[0].addEventListener('click', (e) => {
-      e.preventDefault()
-      startDiv.innerHTML = ''
-      leaderboardRows.forEach(row => {row.innerHTML = ''})
-      startDiv.innerHTML = ''
-      this.startGame();
-    })
-  }
+  // static removeMenu() {
+    // const startDiv = document.querySelector('.start-button')
+    // startDiv.innerHTML += "<button>New Game</button>"
+    // const leaderboardRows = document.querySelectorAll('.row')
+    // startDiv.children[0].addEventListener('click', (e) => {
+    //   e.preventDefault()
+    //   startDiv.innerHTML = ''
+    //   leaderboardRows.forEach(row => {row.innerHTML = ''})
+    //   startDiv.innerHTML = ''
+    //   this.startGame();
+    // })
+  // }
 
   static startGame() {
     this.game = new Game()
