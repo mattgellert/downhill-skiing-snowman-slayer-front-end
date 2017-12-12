@@ -52,6 +52,8 @@ class App {
 
     const headerImage = document.querySelector('.header-image')
     headerImage.src = "images/game_over.png"
+    const instructionsImage = document.querySelector('.instructions-image')
+    instructionsImage.src = ""
 
     const startDiv = document.querySelector('.start-button')
 
@@ -61,11 +63,16 @@ class App {
     <form>
       <input type="text" class="username" id="username" placeholder='Enter your username'>
       <button type='submit'>Save</button>
-    </form>`
+    </form>
+    <button>Skip Save</button>`
     startDiv.innerHTML += userInput
     document.querySelector('canvas').style.zIndex = "-1";
     document.querySelector('.leaderboard-display-wrapper').style.marginTop = "80px";
-
+    startDiv.children[1].addEventListener("click", (e) => {
+      setTimeout(() => {
+        location.reload(true)
+      }, 1000)
+    })
     startDiv.children[0].addEventListener('submit', (e) => {
       e.preventDefault()
 
@@ -119,7 +126,8 @@ class App {
     rowLabels[1].innerHTML += this.generateStatRow2(labels[1], users.top_scorers, 'top_score')
     rowLabels[2].innerHTML += this.generateStatRow2(labels[2], users.top_slayers, 'most_snowmen')
     rowLabels[3].innerHTML += this.generateStatRow2(labels[3], users.genocidal_maniacs, 'total_snowmen')
-    //
+    // const instructions = document.querySelector('.instructions')
+    // instructions.innerText = "Left Right Jump Shoot"
     // this.removeMenu();
   }
 
