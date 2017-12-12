@@ -1,3 +1,121 @@
+/*Matt's additions below*/
+canvas {
+    border:1px solid #d3d3d3;
+    background-color: #f1f1f1;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin-left: auto;
+    margin-right: auto;
+    width:60%;
+    height:100%;
+    padding: 0;
+}
+
+
+p {
+  margin: auto;
+  line-height: 1.5;
+}
+
+.leaderboard-display {
+  display: block;
+  margin: 16px 30px 20px;
+}
+
+.username {
+    height: 30px;
+    margin-right: 10px;
+    width: 300px;
+    padding: 0 10px;
+    outline: none;
+    /* padding: 10px; */
+}
+
+.row {
+  display: flex;
+  flex-direction: row;
+}
+
+.row-label, .labels {
+  font-weight: 900;
+}
+
+.cell {
+  flex: 25%;
+  border-style: ridge;
+  height: 50px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.start-button {
+  margin-bottom: 20px;
+}
+
+.body {
+  background: #010101;
+  font-family: "Courier New", Courier, "Lucida Sans Typewriter", monospace;
+}
+
+
+.header {
+  background: #d9e2e8;
+}
+
+.header-image {
+  margin-top: 10px;
+  height: 150px;
+  display: block;
+  width: 100%;
+}
+.container {
+  height: 600px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.leaderboard-wrapper {
+  margin: auto;
+}
+
+.leaderboard-display-wrapper {
+  margin: auto;
+  width: 700px;
+  text-align: center;
+  border-style: ridge;
+  background: #d9e2e8;
+}
+
+button {
+  display: inline-block;
+  padding: 10px 20px;
+  font-size: 24px;
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+  outline: none;
+  color: #fff;
+  background-color: #5faf4c;
+  border-radius: 5px;
+  font-family: "Courier New", Courier, "Lucida Sans Typewriter", monospace;
+}
+
+button:hover {background-color: #3e8e41}
+
+button:active {
+  background-color: #3e8e41;
+  transform: translateY(4px);
+}
+
+
+/*Matt's additions above*/
+
 #skier {
   /*background-color: white;
   height: 20px;*/

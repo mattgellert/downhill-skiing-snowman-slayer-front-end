@@ -4,20 +4,33 @@
     <meta charset="utf-8">
     <title>Downhill Skiing Snowman SLAYER</title>
     <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+    <script src="https://code.createjs.com/soundjs-0.6.2.min.js"></script>
     <link rel="stylesheet" type="text/css" href="index.css">
   </head>
-  <body>
-    <h3>Downhill Skiing Snowman SLAYER</h1>
-    <div id="game">
-      <!-- <div id="dodger" style="bottom: 0px; left: 180px;"></div> -->
-      <img id="skier" src="images/Skier.png" style="bottom: 60px; left: 400px;">
-      <!-- <img id="skier-right-1" src="images/LeftTurn/SkierTurnLeft1.png" style="bottom: 60px; left: 400px;">
-      <img id="skier-right-2" src="images/LeftTurn/SkierTurnLeft2.png" style="bottom: 60px; left: 400px;">
-      <img id="skier-right-3" src="images/LeftTurn/SkierTurnLeft3.png" style="bottom: 60px; left: 400px;"> -->
+  <body class="body">
 
+    <div class="container">
+      <div class="leaderboard-wrapper">
+        <div class="leaderboard-display-wrapper">
+          <div class="header">
+            <img class="header-image" src="images/gameTitle.png"></img>
+          </div>
+          <div class="leaderboard-display">
+            <div class="row labels"></div>
+            <div class="row first"></div>
+            <div class="row second"></div>
+            <div class="row third"></div>
+          </div>
+          <div class="start-button"></div>
+        </div>
+      </div>
     </div>
 
+
     <script type="text/javascript" src='src/index.js'></script>
-    <script type="text/javascript" src='user.js'></script>
+    <script type="text/javascript" src='src/app.js'></script>
+    <script type="text/javascript" src='src/game.js'></script>
+    <script type="text/javascript" src='src/component.js'></script>
+    <script type="text/javascript" src='src/skier.js'></script>
   </body>
 </html>
