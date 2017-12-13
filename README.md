@@ -1,7 +1,9 @@
 # Downhill Skiing Snowman Slayer
-Avoid evil snowman and defend yourself with snowballs. Built with JavaScript. Game board uses HTML Canvas.
+Full-stack web app. Avoid evil snowman and defend yourself with snowballs. Built with JavaScript using the OOP pattern. Game board uses HTML Canvas. API for user stats build with Ruby on Rails.
 
-GitHub: https://github.com/mattgellert/code-caverns-front-end
+GitHub (front): https://github.com/mattgellert/downhill-skiing-snowman-slayer-front-end
+
+GitHub (back): https://github.com/mattgellert/downhill-skiing-snowman-slayer-back-end
 
 Built for the week 9 JavaScript group project at Flatiron with Sikander Chowhan (sikanderc).
 
