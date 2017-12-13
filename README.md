@@ -1,15 +1,14 @@
-# downhill-skiing-snowman-slayer-frontend
+# Downhill Skiing Snowman Slayer
+<img src="https://media.giphy.com/media/26Ff0jadZ2aPFcZMs/giphy.gif" height="500px">
 
 ## Shooting
+<img src="https://media.giphy.com/media/3ohjV8QrNJBZVbT39K/giphy.gif" height="500px">
 
 ## Power Up Rubies
-
+<img src="https://media.giphy.com/media/xUNd9YQVCp0pSvKG9G/giphy.gif" height="500px">
 ## Jumping Logs
-
- - when you don't jump you die
-
+<img src="https://media.giphy.com/media/xUNda2sblYL2B6QZsA/giphy.gif" height="500px">
 ## Collisions
+<img src="https://media.giphy.com/media/3ohjVa2alnFIZEqODS/giphy.gif" height="500px">
 
-### Trees
-
-### Snowmen
+<img src="https://media.giphy.com/media/xUNd9TH4DjYe9zDgic/giphy.gif" height="500px">
