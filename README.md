@@ -1,5 +1,5 @@
 # Downhill Skiing Snowman Slayer
-<img src="https://media.giphy.com/media/26Ff0jadZ2aPFcZMs/giphy.gif" height="500px">
+<img src="./public/images/DS3-start-menu.png" height="300px">
 
 ## Shooting
 <img src="https://media.giphy.com/media/3ohjV8QrNJBZVbT39K/giphy.gif" height="500px">
